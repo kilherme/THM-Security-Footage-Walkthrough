@@ -48,7 +48,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 
 11º Imagem é extraída com sucesso ;-)
 
-12º Automatizar a tarefa com scripts substituindo para as outras 1109 imagens aproximadamente selecionando o inicio do arquivo a seguinte sequência de bytes "FF D8 FF E0" e o fim do arquivo com a sequência "FF D9" ou fazer como eu e extrair uma imagem a cada 100.
+12º Automatizar a tarefa com scripts substituindo para as outras 1109 imagens aproximadamente selecionando o inicio do arquivo a seguinte sequência de bytes "FF D8 FF E0" e o fim do arquivo com a sequência "FF D9" ou fazer como eu, e extrair uma imagem a cada 100.
 
 
 
