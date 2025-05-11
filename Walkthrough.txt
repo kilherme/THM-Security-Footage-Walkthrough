@@ -35,7 +35,7 @@ Passos realizados:
 
 07º Selecionamos somente os pacotes com porta destino 42312 com o filtro "tcp.dstport == 42312" devido ao HTTP-Request/Response
 
-08º Exportamos os bytes do pacote na guia TCP Segment Data
+08º Organizamos por número do pacote e exportamos os bytes de um pacote na guia TCP Segment Data
 
 09º Analisamos com o binwalk binwalk arquivo.bin
 As saídas começam com: 
