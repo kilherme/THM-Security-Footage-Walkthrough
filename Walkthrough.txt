@@ -1,0 +1,62 @@
+01º Analisar a captura com as opções Protocol Hierarchy e conversations
+Em Conversation IPV4, há conversação com uma máquina externa
+Em Protocol Hierarchy, 1109 Pacotes são TCP e apenas um é HTTP
+
+02º No único pacote HTTP, clicamos nele e escolhemos "follow tcp Stream"
+A resposta do GET/ HTTP/1.1 é: 
+
+HTTP/1.1 200 OK
+Connection: Keep-Alive
+Transfer-Encoding: chunked (Em pedaçõs)
+Content-Type: multipart/x-mixed-replace; boundary=BoundaryString
+Date: Sat, 02 Apr 2022 20:31:18 GMT
+2906
+--BoundaryString
+Content-type: image/jpeg
+Content-Length:     10427
+
+
+03º Parece que o arquivo de vídeo é formado por pedaçõs, uma coleção de jpegs, pra ter certeza, vou pedir pro DeepSeek Analisar
+
+04º Converter o arquivo com extensão pcap para um formato que o Deepseek possa ler, exportar dissecação de pacotes como texto puro e remover as opções de sumário e detalhes, só deixando a opção bytes
+
+05º O Deepseek retorna isso:
+
+Analisando o arquivo de captura de pacotes, identifiquei que há dados de uma imagem JPEG sendo transmitidos. Vou extrair esses dados para reconstruir a imagem.
+Passos realizados:
+
+    Identificação do fluxo de dados: Encontrei pacotes contendo cabeçalhos JPEG (FF D8 FF E0 indica o início de uma imagem JPEG e FF D9 indica o fim).
+
+    Extraindo os dados hexadecimais: Os dados da imagem estão espalhados em vários pacotes, principalmente em blocos que começam com FF D8 FF E0 e terminam com FF D9.
+
+    Reconstrução da imagem: Combinei os dados hexadecimais relevantes e os converti para um arquivo binário.
+
+06º O Deepseek tem limite de arquivo e só retorna imagens em formato Base64 então só serve para dar o caminho.
+
+07º Selecionamos somente os pacotes com porta destino 42312 com o filtro "tcp.dstport == 42312" devido ao HTTP-Request/Response
+
+08º Exportamos os bytes do pacote na guia TCP Segment Data
+
+09º Analisamos com o binwalk binwalk arquivo.bin
+As saídas começam com: 
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+79            0x4F            JPEG image data, JFIF standard 1.01
+109           0x6D            TIFF image data, big-endian, offset of first image directory: 8
+
+10º Remover a parte que não pertence a imagem com DD "dd ibs=1 skip=79 if=arquivoXX.bin of=imagemXX.jpg"
+
+11º Imagem é extraída com sucesso ;-)
+
+12º Automatizar a tarefa com scripts substituindo para as outras 1109 imagens aproximadamente selecionando o inicio do arquivo a seguinte sequência de bytes "FF D8 FF E0" e o fim do arquivo com a sequência "FF D9" ou fazer como eu e extrair uma imagem a cada 100.
+
+
+
+
+
+
+
+
+
+
+
